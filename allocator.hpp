@@ -228,7 +228,7 @@ public:
             }
             m_head = allocate_block(sizeof(T));
         }
-        Chuck* p = m_head;
+        Chunk* p = m_head;
         m_head = m_head->next;
         return reinterpret_cast<T*>(p);
     }
@@ -236,7 +236,7 @@ public:
     void deallocate(T* p) override
     {
         std::cout << "block deallocator\n";
-        auto chunk = reinterpret_cast<Chuck*>(p);
+        auto chunk = reinterpret_cast<Chunk*>(p);
         chunk->next = m_head;
         m_head = chunk;
     }
@@ -247,14 +247,14 @@ private:
         Chunk* next;
     };
 
-    Chuck* allocate_block(std::size_t chunk_size)
+    Chunk* allocate_block(std::size_t chunk_size)
     {
         std::size_t block_size = chunk_size * ChunksPerBlock;
-        Chuck* head = reinterpret_cast<Chuck*>(std::malloc(block_size));
-        Chuck* chunk = head;
+        Chunk* head = reinterpret_cast<Chunk*>(std::malloc(block_size));
+        Chunk* chunk = head;
         for (int i = 0; i < ChunksPerBlock; ++i)
         {
-            chunk->next = reinterpret_cast<Chuck*>(reinterpret_cast<unsigned char*>(chunk) + chunk_size);
+            chunk->next = reinterpret_cast<Chunk*>(reinterpret_cast<unsigned char*>(chunk) + chunk_size);
             chunk = chunk->next;
         }
         chunk->next = nullptr;
