@@ -242,9 +242,9 @@ public:
     }
 
 private:
-    struct Chuck
+    struct Chunk
     {
-        Chuck* next;
+        Chunk* next;
     };
 
     Chuck* allocate_block(std::size_t chunk_size)
@@ -261,7 +261,7 @@ private:
         return head;
     }
     
-    Chuck* m_head;
+    Chunk* m_head;
 };
 
 
